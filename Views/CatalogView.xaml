@@ -1,0 +1,190 @@
+﻿<UserControl
+    x:Class="BuildingMaterials.Views.CatalogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:coms="clr-namespace:BuildingMaterials.Commands"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:BuildingMaterials.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+    <Grid Background="#D0CCD0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
+        <Rectangle
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Fill="#e8ebf1" />
+        <TextBlock
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontFamily="serif"
+            FontSize="20"
+            Text="{Binding FullName}" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Cursor="">
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="20"
+                Padding="5"
+                Command="{Binding ShowCatalog}"
+                Content="Каталог"
+                Cursor="Hand" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="20"
+                Padding="5"
+                Command="{Binding ShowOrders}"
+                Content="Мои заказы"
+                Cursor="Hand" />
+        </StackPanel>
+
+        <ContentControl
+            Grid.Row="1"
+            Grid.Column="1"
+            Content="{Binding CurrentTarget}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type coms:ShowCatalog}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="5*" />
+                        </Grid.RowDefinitions>
+                        <ComboBox
+                            Grid.Row="0"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            materialDesign:HintAssist.Hint="Тип"
+                            ItemsSource="{Binding Types}"
+                            SelectedValue="{Binding Path=PickedType}" />
+                        <ComboBox
+                            Grid.Row="0"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            materialDesign:HintAssist.Hint="Категория"
+                            ItemsSource="{Binding Path=Categories}"
+                            SelectedValue="{Binding Path=PickedCategory}" />
+                        <ListView
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="15"
+                            ItemsSource="{Binding ProductsList}"
+                            SelectedItem="{Binding OpenedProduct}">
+
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Название">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Title}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Категория">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Category}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Поставщик">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Provider}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Стоимость">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Cost}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Количество">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Count}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Ед./Изм.">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Width="auto" Text="{Binding Measurement}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type coms:ShowOrders}">
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="15"
+                        ItemsSource="{Binding OrdersList}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Номер заказа">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="auto" Text="{Binding Number}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Стоимость">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="auto" Text="{Binding FullPrice}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Статус">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="auto" Text="{Binding Status}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="ФИО">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="auto" Text="{Binding FullName}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Количество товара">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="auto" Text="{Binding Count}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+    </Grid>
+</UserControl>

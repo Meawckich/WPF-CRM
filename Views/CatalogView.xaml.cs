@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BuildingMaterials.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RegisterView.xaml
+    /// Логика взаимодействия для CatalogView.xaml
     /// </summary>
-    public partial class RegisterView : UserControl
+    public partial class CatalogView : UserControl
     {
-        public RegisterView()
+        public CatalogView()
         {
             InitializeComponent();
         }

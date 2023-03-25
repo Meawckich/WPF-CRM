@@ -1,11 +1,47 @@
-﻿using System;
+﻿using BuildingMaterials.ViewModels;
+using System;
 using System.Windows.Controls;
 
 namespace BuildingMaterials.Stores
 {
     public class NavigationStore
     {
-        public event Action<Page> CurrentViewChanged;
-        public void OnCurrentViewChanged(Page page) => CurrentViewChanged?.Invoke(page);
+        public event Action CurrentViewModelChanged;
+        private ViewModelBase _currentViewModel;
+        private int _height;
+        private int _width;
+
+        public ViewModelBase CurrentViewModel
+        {
+            get => _currentViewModel;
+            set
+            {
+                _currentViewModel= value;
+                OnCurrentViewModelChanged();
+            }
+        }
+        public int Height
+        {
+            get => _height;
+            set
+            {
+                _height = value;
+                OnCurrentViewModelChanged();
+            }
+        }
+        public int Width
+        {
+            get => _width;
+            set
+            {
+                _width = value;
+                OnCurrentViewModelChanged();
+            }
+        }
+
+        private void OnCurrentViewModelChanged()
+        {
+            CurrentViewModelChanged?.Invoke();
+        }
     }
 }

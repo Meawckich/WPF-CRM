@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using BuildingMaterials.DbContext;
 using BuildingMaterials.Stores;
 using BuildingMaterials.ViewModels;
+using BuildingMaterials.Views;
+using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace BuildingMaterials
 {
@@ -26,22 +28,29 @@ namespace BuildingMaterials
             Configuration = builder.Build();
 
             var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
+            NavigationStore store = new NavigationStore();
+
+            ConfigureServices(serviceCollection,ref store);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             ServiceProvider.GetRequiredService<MainWindow>().Show();
+            store.Height = 450;
+            store.Width = 800;
+            store.CurrentViewModel = new LoginViewModel(store, ServiceProvider.GetRequiredService<SqlServerDbContext>());
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private void ConfigureServices(IServiceCollection services, ref  NavigationStore store)
         {
-            services.AddDbContextPool<SqlServerDbContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("BuildingMaterialsDbConnection")));
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<NavigationStore>();
+            services.AddSingleton(new MainWindow()
+            {
+                DataContext = new MainViewModel(store)
+            });
+            services.AddTransient<LoginView>();
             services.AddTransient<MainViewModel>();
-            services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
+            services.AddTransient<SqlServerDbContext>();
+
         }
     }
 }

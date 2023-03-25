@@ -1,12 +1,28 @@
-﻿<Window x:Class="BuildingMaterials.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BuildingMaterials"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Frame Content="{Binding CurrentView}" NavigationUIVisibility="Hidden"/>
-    </Grid>
+﻿<Window
+    x:Class="BuildingMaterials.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BuildingMaterials"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:BuildingMaterials.ViewModels"
+    xmlns:views="clr-namespace:BuildingMaterials.Views"
+    Title="BuildingMaterials"
+    Width="{Binding Width, Mode=TwoWay}"
+    Height="{Binding Height, Mode=TwoWay}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <ContentControl Content="{Binding CurrentViewModel}">
+        <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+                <views:LoginView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
+                <views:RegisterView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CatalogViewModel}">
+                <views:CatalogView />
+            </DataTemplate>
+        </ContentControl.Resources>
+    </ContentControl>
 </Window>

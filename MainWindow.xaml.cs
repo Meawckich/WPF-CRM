@@ -18,10 +18,10 @@ namespace BuildingMaterials
 {
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel mainViewModel)
+        public MainWindow()
         {
             InitializeComponent();
-            DataContext = mainViewModel;
+
         }
     }
 }

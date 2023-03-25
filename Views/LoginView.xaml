@@ -1,18 +1,17 @@
-﻿<Page
+﻿<UserControl
     x:Class="BuildingMaterials.Views.LoginView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:TestApplication.Behavior"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BuildingMaterials.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="LoginView"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
-    <Grid Background="#ffffff">
+    <Grid Background="#D0CCD0">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -27,7 +26,7 @@
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="25"
+            FontSize="50"
             Text="Вход">
             <TextBlock.Effect>
                 <DropShadowEffect
@@ -54,31 +53,32 @@
             VerticalAlignment="Center"
             materialDesign:HintAssist.Hint="Пароль"
             FontSize="14"
-            Style="{StaticResource MaterialDesignFilledPasswordBox}" />
+            Style="{StaticResource MaterialDesignFilledPasswordBox}">
+            <b:Interaction.Behaviors>
+                <behaviors:PasswordBehavior Password="{Binding Password, Mode=TwoWay}" />
+            </b:Interaction.Behaviors>
+        </PasswordBox>
         <Button
             Grid.Row="3"
             Margin="250,10,10,0"
             Padding="5"
             Command="{Binding NavRegisterCommand}"
             Content="Регистрация" />
-        <materialDesign:Snackbar
-            Grid.Row="3"
-            FontSize="15"
-            IsActive="False"
-            Message="Проверьте введенные данные"
-            MessageQueue="{Binding ErrorMessage}" />
         <Button
             Grid.Row="3"
             Grid.Column="1"
             Margin="10,10,250,0"
             Padding="5"
-            Command="{Binding NavigationCommand}"
+            Command="{Binding NavToDataCommand}"
             Content="Вход" />
         <materialDesign:Snackbar
             Grid.Row="3"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            Cursor=""
             FontSize="15"
             IsActive="False"
             Message="Проверьте введенные данные"
             MessageQueue="{Binding ErrorMessage}" />
     </Grid>
-</Page>
+</UserControl>

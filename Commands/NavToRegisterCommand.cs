@@ -1,4 +1,5 @@
-﻿using BuildingMaterials.Stores;
+﻿using BuildingMaterials.DbContext;
+using BuildingMaterials.Stores;
 using BuildingMaterials.ViewModels;
 using BuildingMaterials.Views;
 using System.Windows;
@@ -7,17 +8,22 @@ namespace BuildingMaterials.Commands
 {
     class NavToRegisterCommand : CommandBase
     {
-        private NavigationStore _store;
-        private RegisterViewModel _registerViewModel;
+        private readonly NavigationStore _navigationStore;
+        private SqlServerDbContext _context;
 
-        public NavToRegisterCommand(NavigationStore store,RegisterViewModel registerViewModel)
+        public NavToRegisterCommand(NavigationStore navigationStore, SqlServerDbContext context)
         {
-            _store = store;
-            _registerViewModel = registerViewModel;
+            _navigationStore = navigationStore;
+            _context = context;
         }
+
         public override void Execute(object parameter)
         {
-            _store.OnCurrentViewChanged(new RegisterView(_registerViewModel));
+            _navigationStore.CurrentViewModel = new RegisterViewModel(_navigationStore, _context);
+            _navigationStore.Width = 800;
+            _navigationStore.Height = 500;
         }
+
+
     }
 }

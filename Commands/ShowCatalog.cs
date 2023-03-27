@@ -1,8 +1,10 @@
 ﻿using BuildingMaterials.DataDTOs;
 using BuildingMaterials.DbContext;
 using BuildingMaterials.Models;
+using BuildingMaterials.Stores;
 using BuildingMaterials.ViewModels;
 using MaterialDesignColors;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,19 +24,19 @@ namespace BuildingMaterials.Commands
         private ObservableCollection<ProductDTO> _productsList;
         private ObservableCollection<string> _types;
         private ObservableCollection<string> _categories;
+        private ObservableCollection<string> _providers;
+        private ObservableCollection<string> _manufacturers;
         private string _pickedType;
         private string _pickedCategory;
-        public ICommand OpenProduct;
-
+        private string _provider;
+        private string _manufacturer;
+        private string _pickedSoundLike;
         private ProductDTO _openedProduct;
+        public delegate void OnSelChanging(ProductDTO product);
+        public event OnSelChanging OnSelChanged;
 
-        public  delegate void PickingSelectedItem();
 
-        //public void OnPickingSelectedItem()
-        //{
-        //    PickingSelectedItem?.Invoke();
-        //    MessageBox.Show(OpenProduct.Title);
-        //}
+        public ICommand OpenProduct { get; set; }
         public string PickedType
         {
             get => _pickedType;
@@ -52,7 +54,7 @@ namespace BuildingMaterials.Commands
             {
                 _openedProduct = value;
                 OnPropertyChanged(nameof(OpenedProduct));
-
+                OnSelChanged?.Invoke(OpenedProduct);
             }
         }
         public string PickedCategory
@@ -62,6 +64,36 @@ namespace BuildingMaterials.Commands
             {
                 _pickedCategory = value;
                 OnPropertyChanged(nameof(PickedCategory));
+                Search();
+            }
+        }
+        public string Provider
+        {
+            get => _provider;
+            set
+            {
+                _provider = value;
+                OnPropertyChanged(nameof(Provider));
+                Search();
+            }
+        }
+        public string Manufacturer
+        {
+            get => _manufacturer;
+            set
+            {
+                _manufacturer = value;
+                OnPropertyChanged(nameof(Manufacturer));
+                Search();
+            }
+        }
+        public string PickedSoundsLikeSearch
+        {
+            get => _pickedSoundLike;
+            set
+            {
+                _pickedSoundLike = value;
+                OnPropertyChanged(nameof(PickedSoundsLikeSearch));
                 Search();
             }
         }
@@ -84,6 +116,24 @@ namespace BuildingMaterials.Commands
                 OnPropertyChanged(nameof(Categories));
             }
         }
+        public ObservableCollection<string> Providers
+        {
+            get => _providers;
+            set
+            {
+                _providers = value;
+                OnPropertyChanged(nameof(Providers));
+            }
+        }
+        public ObservableCollection<string> Manufacturers
+        {
+            get => _manufacturers;
+            set
+            {
+                _manufacturers = value;
+                OnPropertyChanged(nameof(Manufacturers));
+            }
+        }
 
         public ObservableCollection<ProductDTO> ProductsList
         {
@@ -95,9 +145,10 @@ namespace BuildingMaterials.Commands
             }
         }
 
-        public ShowCatalog(CatalogViewModel viewModel, SqlServerDbContext context)
+        public ShowCatalog(DialogStore dialogStore,CatalogViewModel viewModel, SqlServerDbContext context)
         {
-            //OpenProduct = new OpenProductCommand();
+            
+            OpenProduct = new OpenProductCommand(dialogStore, this, context);
             _context = context;
             IEnumerable<string> smthing = from a in context.ProductTypes.ToList()
                                           select a.Title;
@@ -107,6 +158,13 @@ namespace BuildingMaterials.Commands
                                           select a.Title;
             Categories = new ObservableCollection<string>(cats);
 
+            IEnumerable<string> pro = from a in context.Providers.ToList()
+                                          select a.Title;
+            Providers= new ObservableCollection<string>(pro);
+
+            IEnumerable<string> man = from a in context.ProductManufacturers.ToList()
+                                      select a.Title;
+            Manufacturers = new ObservableCollection<string>(man);
 
             Search();
             _viewModel = viewModel;
@@ -116,6 +174,11 @@ namespace BuildingMaterials.Commands
         {
             IEnumerable<ProductType> types;
             IEnumerable<ProductCategory> categories;
+            IEnumerable<Provider> provs;
+            IEnumerable<ProductManufacturer> manus;
+            IEnumerable<Product> prods;
+
+
             if(PickedType != null) 
             {
                 types = _context.ProductTypes.Where(x => x.Title == PickedType).ToList();
@@ -134,17 +197,42 @@ namespace BuildingMaterials.Commands
                 categories = _context.ProductCategories.ToList();
             }
 
-            var temp = _context.Products.ToList();
+            if(Provider != null)
+            {
+                provs = _context.Providers.Where(x => x.Title == Provider).ToList();
+            }
+            else
+            {
+                provs = _context.Providers.ToList();
+            }
+
+            if (Manufacturer != null)
+            {
+                manus = _context.ProductManufacturers.Where(x => x.Title == Manufacturer).ToList();
+            }
+            else
+            {
+                manus = _context.ProductManufacturers.ToList();
+            }
+
+            if( PickedSoundsLikeSearch != null) 
+            {
+                prods = _context.Products.Where(x => x.Title.StartsWith(PickedSoundsLikeSearch)).ToList();
+            }
+            else
+            {
+                prods = _context.Products.ToList();
+            }
+
+           
             
-            var manufactures = _context.ProductManufacturers.ToList();
             var providers = _context.ProductProviders.ToList();
-            var provider = _context.Providers.ToList();
-            IEnumerable<ProductDTO> list = from a in temp
+            IEnumerable<ProductDTO> list = from a in prods
                                            join s in types on a.ProductTypeId equals s.Id
-                                           join m in manufactures on a.ProductManufacturerId equals m.Id
+                                           join m in manus on a.ProductManufacturerId equals m.Id
                                            join c in categories on a.ProductCategoryId equals c.Id
                                            join p in providers on a.Id equals p.ProductId
-                                           join r in provider on p.ProviderId equals r.Id
+                                           join r in provs on p.ProviderId equals r.Id
                                            select new ProductDTO
                                            {
                                                Number = a.Id,

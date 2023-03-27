@@ -44,7 +44,7 @@
             materialDesign:HintAssist.Hint="Логин"
             FontSize="14"
             Style="{StaticResource MaterialDesignFilledTextBox}"
-            Text="{Binding Login}" />
+            Text="{Binding Login, Mode=OneWayToSource}" />
         <PasswordBox
             Grid.Row="2"
             Grid.ColumnSpan="2"

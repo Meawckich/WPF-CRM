@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using BuildingMaterials.DbContext;
+using BuildingMaterials.Services;
 using BuildingMaterials.Stores;
 using BuildingMaterials.ViewModels;
 using BuildingMaterials.Views;
@@ -29,23 +30,25 @@ namespace BuildingMaterials
 
             var serviceCollection = new ServiceCollection();
             NavigationStore store = new NavigationStore();
-
-            ConfigureServices(serviceCollection,ref store);
+            DialogStore dialogStore = new DialogStore();
+            ConfigureServices(serviceCollection,ref store, ref dialogStore);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             ServiceProvider.GetRequiredService<MainWindow>().Show();
+
             store.Height = 450;
             store.Width = 800;
-            store.CurrentViewModel = new LoginViewModel(store, ServiceProvider.GetRequiredService<SqlServerDbContext>());
+            store.CurrentViewModel = new LoginViewModel(store, ServiceProvider.GetRequiredService<SqlServerDbContext>(), dialogStore);
         }
 
-        private void ConfigureServices(IServiceCollection services, ref  NavigationStore store)
+        private void ConfigureServices(IServiceCollection services, ref  NavigationStore store, ref DialogStore dialogStore)
         {
             services.AddSingleton(new MainWindow()
             {
                 DataContext = new MainViewModel(store)
             });
+            services.AddSingleton(dialogStore);
             services.AddTransient<LoginView>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<RegisterViewModel>();

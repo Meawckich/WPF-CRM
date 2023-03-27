@@ -13,13 +13,15 @@ namespace BuildingMaterials.Commands
     public class NavToDataCommand : CommandBase
     {
         private LoginViewModel _loginViewModel;
+        private DialogStore _diagStore;
         private SqlServerDbContext _context;
         private NavigationStore _store;
-        public NavToDataCommand(NavigationStore store,LoginViewModel loginViewModel, SqlServerDbContext context)
+        public NavToDataCommand(NavigationStore store,LoginViewModel loginViewModel, SqlServerDbContext context, DialogStore diagStore)
         {
             _loginViewModel = loginViewModel;
             _context = context;
             _store = store;
+            _diagStore = diagStore;
         }
         public override void Execute(object parameter)
         {
@@ -48,7 +50,7 @@ namespace BuildingMaterials.Commands
                     TimeSpan.FromSeconds(2));
                 return;
             }
-            _store.CurrentViewModel = new CatalogViewModel(findUser, _context);
+            _store.CurrentViewModel = new CatalogViewModel(_diagStore, findUser, _context);
             _store.Width = 1100;
             _store.Height = 700;
         }

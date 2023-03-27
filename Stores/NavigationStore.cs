@@ -1,5 +1,8 @@
-﻿using BuildingMaterials.ViewModels;
+﻿using BuildingMaterials.DataDTOs;
+using BuildingMaterials.ViewModels;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace BuildingMaterials.Stores

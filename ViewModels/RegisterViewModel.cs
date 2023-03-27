@@ -72,10 +72,10 @@ namespace BuildingMaterials.ViewModels
         private SnackbarMessageQueue _errorMessage;
         public ICommand BackCommand { get; set; }
         public ICommand EnterCommand { get; set; }
-        public RegisterViewModel(NavigationStore store, SqlServerDbContext context)
+        public RegisterViewModel(NavigationStore store, SqlServerDbContext context, DialogStore store1)
         {
             _errorMessage = new SnackbarMessageQueue();
-            BackCommand = new ReturnCommand(store, context);
+            BackCommand = new ReturnCommand(store, context, store1);
             EnterCommand= new EnterCommand(store,this, context);
         }
     }

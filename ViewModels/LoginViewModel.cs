@@ -43,11 +43,11 @@ namespace BuildingMaterials.ViewModels
         }
         public ICommand NavRegisterCommand { get; set; }
         public ICommand NavToDataCommand { get; set; }
-        public LoginViewModel(NavigationStore store, SqlServerDbContext context)
+        public LoginViewModel(NavigationStore store, SqlServerDbContext context, DialogStore store1)
         {
             _errorMessage = new SnackbarMessageQueue();
-            NavRegisterCommand = new NavToRegisterCommand(store, context);
-            NavToDataCommand = new NavToDataCommand(store, this, context);
+            NavRegisterCommand = new NavToRegisterCommand(store, context, store1);
+            NavToDataCommand = new NavToDataCommand(store, this, context, store1);
         }
     }
 }

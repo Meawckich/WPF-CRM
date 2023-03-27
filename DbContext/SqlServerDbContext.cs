@@ -25,7 +25,7 @@ namespace BuildingMaterials.DbContext
         //TODO: Add constring
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=;Initial Catalog=BuildingMaterials;Integrated Security=True;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-FG7K5UJ;Initial Catalog=BuildingMaterials;Integrated Security=True;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
     }
 }

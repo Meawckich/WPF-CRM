@@ -1,0 +1,160 @@
+﻿<UserControl
+    x:Class="BuildingMaterials.Views.ProductView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:BuildingMaterials.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="#D0CCD0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Номер: ">
+            <Run Text="{Binding Product.Number}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Название: ">
+            <Run Text="{Binding Product.Title}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Тип:">
+            <Run Text="{Binding Product.Type}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Категория:">
+            <Run Text="{Binding Product.Category}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Производитель:">
+            <Run Text="{Binding Product.Manufacturer}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Поставщик:">
+            <Run Text="{Binding Product.Provider}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Количество:">
+            <Run Text="{Binding Product.Count}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Единица измерения:">
+            <Run Text="{Binding Product.Measurement}" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Описание:">
+            <Run Text="{Binding Product.Description}" />
+        </TextBlock>
+        <StackPanel
+            Grid.Row="4"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="Итого:" />
+            <TextBlock
+                Width="151"
+                Margin="10"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="{Binding Money}" />
+
+            <Button
+                Margin="0,0,0,0"
+                Command="{Binding AddingToBasket}"
+                Content="Добавить в заказ" />
+        </StackPanel>
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="1"
+            Width="266"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="Стоимость:">
+            <Run Text="{Binding Product.Cost}" />
+        </TextBlock>
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            MinWidth="80"
+            Padding="10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            materialDesign:HintAssist.Hint="Кол-во: "
+            FontSize="14"
+            Style="{StaticResource MaterialDesignTextBox}"
+            Text="{Binding Counts, UpdateSourceTrigger=PropertyChanged}" />
+    </Grid>
+</UserControl>

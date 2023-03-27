@@ -50,6 +50,14 @@ namespace BuildingMaterials.Commands
                     TimeSpan.FromSeconds(2));
                 return;
             }
+
+            if(findUser.RoleId != 1)
+            {
+                _store.CurrentViewModel = new AdminViewModel(_context, _loginViewModel);
+                _store.Width = 1100;
+                _store.Height = 700;
+                return;
+            }
             _store.CurrentViewModel = new CatalogViewModel(_diagStore, findUser, _context);
             _store.Width = 1100;
             _store.Height = 700;

@@ -52,7 +52,12 @@ namespace BuildingMaterials.Commands
                 _context.OrderProducts.Add(orderProduct);
             }
             _context.SaveChanges();
-            IDocHelper word = new WordProcessService($"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}/FinePrimerOne.docx",_context,Orders);
+            string path = @$"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName}\FinePrimerOne.docx";
+            IDocHelper word = new WordProcessService(path,_context,Orders);
+            for(int i=0; i < Orders.Count;i++)
+            {
+
+            }
 
         }
 

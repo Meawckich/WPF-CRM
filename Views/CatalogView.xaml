@@ -84,7 +84,7 @@
                 Margin="20"
                 Padding="5"
                 Command="{Binding CreateOrder}"
-                Content="Мои заказы"
+                Content="Корзина"
                 Cursor="Hand" />
         </StackPanel>
 
